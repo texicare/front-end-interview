@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 const Tile = ({ color, onClick }) => {
   return (
     <Box
-      onClick={onClick}
+      onclick={onClick}
       sx={{
         width: 40,
         height: 40,

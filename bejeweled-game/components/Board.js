@@ -1,8 +1,6 @@
-import React, { useState } from "react";
 import { Box } from "@mui/material";
 import Tile from "./Tile";
 
-const colors = ["red", "yellow", "blue", "green"];
 const boardSize = 10;
 
 const generateInitialBoard = () => {
@@ -39,16 +37,14 @@ const Board = () => {
     <Box
       sx={{
         display: "grid",
-        gridTemplateColumns: `repeat(${boardSize}, 40px)`,
+        gridTemplateColumns: `repeat({boardSize}, 40px)`,
         gridGap: "2px",
-        justifyContent: "center",
         marginTop: "50px",
       }}
     >
       {board.map((row) =>
         row.map((tile) => (
           <Tile
-            key={tile.index}
             color={tile.color}
             onClick={() => handleTileClick(tile.index)}
           />
