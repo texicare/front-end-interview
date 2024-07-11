@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Box } from "@mui/material";
 import Tile from "./Tile";
 
@@ -25,12 +25,13 @@ const Board = () => {
   const handleTileClick = (i, j) => {
     const colorToPop = board[i][j].color;
     const newBoard = board.map((row) => row.map((tile) => ({ ...tile })));
-    popTiles(newBoard, i, j, colorToPop);
+    markTilesToPop(newBoard, i, j, colorToPop);
+    popMarkedTiles(newBoard);
     // cascadeTiles(newBoard);
-    // setBoard(newBoard);
+    setBoard(newBoard);
   };
 
-  const popTiles = (board, i, j, color) => {
+  const markTilesToPop = (board, i, j, color) => {
     if (
       i < 0 ||
       i >= 10 ||
@@ -42,23 +43,31 @@ const Board = () => {
       return;
     }
     board[i][j].popped = true;
-    popTiles(board, i + 1, j, color);
-    popTiles(board, i - 1, j, color);
-    popTiles(board, i, j + 1, color);
-    popTiles(board, i, j - 1, color);
+    markTilesToPop(board, i + 1, j, color);
+    markTilesToPop(board, i - 1, j, color);
+    markTilesToPop(board, i, j + 1, color);
+    markTilesToPop(board, i, j - 1, color);
+  };
+
+  const popMarkedTiles = (board) => {
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        if (board[i][j].popped) {
+          board[i][j] = { color: "white", popped: false };
+        }
+      }
+    }
   };
 
   const cascadeTiles = (board) => {
     for (let j = 0; j < 10; j++) {
+      let emptySpaces = 0;
       for (let i = 9; i >= 0; i--) {
-        if (board[i][j].popped) {
-          for (let k = i; k > 0; k--) {
-            board[k][j] = { ...board[k - 1][j] };
-          }
-          board[0][j] = {
-            color: colors[Math.floor(Math.random() * colors.length)],
-            popped: false,
-          };
+        if (board[i][j].color === "white") {
+          emptySpaces++;
+        } else if (emptySpaces > 0) {
+          board[i + emptySpaces][j] = { ...board[i][j] };
+          board[i][j] = { color: "white", popped: false };
         }
       }
     }
@@ -78,7 +87,7 @@ const Board = () => {
         row.map((tile, j) => (
           <Tile
             key={`${i}-${j}`}
-            color={tile.popped ? "white" : tile.color}
+            color={tile.color}
             onClick={() => handleTileClick(i, j)}
           />
         ))
