@@ -15,6 +15,7 @@ const Tile = ({ color, onClick }) => {
         alignItems: "center",
         cursor: "pointer",
       }}
+      suppressHydrationWarning
     />
   );
 };
