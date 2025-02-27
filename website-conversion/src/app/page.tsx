@@ -7,7 +7,7 @@ export default function Home() {
       <div className="flex justify-center items-center bg-blue-200 h-64 w-64 rounded-md m-8">
         Tailwind
       </div>
-      <Box
+      {/* <Box
         display="flex"
         justifyContent="center"
         alignItems="center"
@@ -18,7 +18,7 @@ export default function Home() {
         m={8}
       >
         Mui
-      </Box>
+      </Box> */}
     </div>
   );
 }
